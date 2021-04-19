@@ -19,22 +19,39 @@
         <div id="app" class="container">
             <div id="app" class="container">
                 <div class="row">
-                    <input type="text" name="" value="" placeholder="Cerca film" v-model="searched" @keyup.enter="getApi">
+                    <input type="text" name="" value="" placeholder="Cerca film/serieTV" v-model="searched" @keyup.enter="getApi">
                     <button type="button" name="button" @click="getApi">Cerca</button>
                 </div>
-            <div class="row">
-                <div class="album" v-for="movie in movies">
+
+            <!-- Film -->
+            <ul class="row">
+                <li class="album" v-for="movie in movies">
                     <h2>{{movie.title}}</h2>
                     <h3>{{movie.original_title}}</h3>
                     <div class="poster">
                         <img src="">
                     </div>
-                    <div class=language v-html="showFlag(movie.original_language)"></div>
+                    <div class=language>
+                        <div class="row" v-html="showFlag(movie.original_language)"></div>
+                    </div>
                     <h3>{{movie.vote_average}}</h3>
-                </div>
+                </li>
+            </ul>
 
-
-            </div>
+            <!-- Serie TV -->
+            <ul class="row">
+                <li class="album" v-for="serie in tvSeries">
+                    <h2>{{serie.name}}</h2>
+                    <h3>{{serie.original_name}}</h3>
+                    <div class="poster">
+                        <img src="">
+                    </div>
+                    <div class=language>
+                        <div class="row" v-html="showFlag(serie.original_language)"></div>
+                    </div>
+                    <h3>{{serie.vote_average}}</h3>
+                </li>
+            </ul>
         </div>
         </div>
     </body>
