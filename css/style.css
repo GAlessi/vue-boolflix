@@ -38,8 +38,9 @@
 }
 
 .album .poster img{
-    width: 200px;
-    height: 200px;
+    display: inline-block;
+    width: 342px;
+    min-height: 513px;
     margin: 10px 0;
 }
 

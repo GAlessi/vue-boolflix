@@ -3,8 +3,8 @@ function init() {
         el:"#app",
 
         data:{
-            movies: [],
             tvSeries:[],
+            movies: [],
             searched: ""
         },
 
@@ -46,6 +46,11 @@ function init() {
                 }else {
                     return "<h3> Language: " + language +"</h3>"
                 }
+            },
+
+            //converte il voto in un intero compreso tra 1 e 5 e aggiorna il data
+            convertVote: function (voteDecimal) {
+                return parseInt(Math.round(voteDecimal/2));
             }
         },
     });

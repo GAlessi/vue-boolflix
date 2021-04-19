@@ -29,12 +29,14 @@
                     <h2>{{movie.title}}</h2>
                     <h3>{{movie.original_title}}</h3>
                     <div class="poster">
-                        <img src="">
+                        <img :src="'https://image.tmdb.org/t/p/w342'+ movie.poster_path">
                     </div>
                     <div class=language>
                         <div class="row" v-html="showFlag(movie.original_language)"></div>
                     </div>
-                    <h3>{{movie.vote_average}}</h3>
+                    <div class="vote" >
+                        <i class="fas fa-star" v-for="i in convertVote(movie.vote_average)"></i>
+                    </div>
                 </li>
             </ul>
 
@@ -44,12 +46,14 @@
                     <h2>{{serie.name}}</h2>
                     <h3>{{serie.original_name}}</h3>
                     <div class="poster">
-                        <img src="">
+                        <img :src="'https://image.tmdb.org/t/p/w342'+ serie.poster_path">
                     </div>
                     <div class=language>
                         <div class="row" v-html="showFlag(serie.original_language)"></div>
                     </div>
-                    <h3>{{serie.vote_average}}</h3>
+                    <div class="vote" >
+                        <i class="fas fa-star" v-for="i in convertVote(serie.vote_average)"></i>
+                    </div>
                 </li>
             </ul>
         </div>
