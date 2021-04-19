@@ -35,16 +35,13 @@ main{
     width: 100%;
     margin-top: 75px;
     flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .row{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: baseline;
+    align-items: center;
 }
 
 .album{
@@ -53,24 +50,44 @@ main{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
+    width: 342px;
+    height: 513px;
+    background-color: grey;
 }
 
 .row button{
     margin-left: 10px;
 }
 
+.album .poster, .album .info{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.album .poster img{
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+.album .info{
+    display: block;
+}
+
+/* .album:hover .poster{
+    display: none;
+}
+
+.album:hover .info{
+    display: block;
+} */
+
 .album .language img{
     width: 20px;
     margin: 0 10px;
 }
 
-.album .poster img{
-    display: inline-block;
-    width: 342px;
-    min-height: 513px;
-    margin: 10px 0;
-}
 
 .album h2{
     margin: 10px 0;

@@ -29,14 +29,16 @@
                     <!-- Film -->
                     <ul class="row">
                         <li class="album" v-for="movie in movies">
-                            <h2>{{movie.title}}</h2>
-                            <h3>{{movie.original_title}}</h3>
                             <div class="poster" v-html="poster(movie.poster_path)"></div>
-                            <div class=language>
-                                <div class="row" v-html="showFlag(movie.original_language)"></div>
-                            </div>
-                            <div class="vote" >
-                                <i class="fas fa-star" v-for="i in convertVote(movie.vote_average)"></i>
+                            <div class="info">
+                                <h2>{{movie.title}}</h2>
+                                <h3>{{movie.original_title}}</h3>
+                                <div class=language>
+                                    <div class="row" v-html="showFlag(movie.original_language)"></div>
+                                </div>
+                                <div class="vote" >
+                                    <i v-for ="(star, starIndex) in 5" :class=" convertVote(movie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
+                                </div>
                             </div>
                         </li>
                     </ul>
@@ -44,14 +46,16 @@
                     <!-- Serie TV -->
                     <ul class="row">
                         <li class="album" v-for="serie in tvSeries">
-                            <h2>{{serie.name}}</h2>
-                            <h3>{{serie.original_name}}</h3>
                             <div class="poster" v-html="poster(serie.poster_path)"></div>
-                            <div class=language>
-                                <div class="row" v-html="showFlag(serie.original_language)"></div>
-                            </div>
-                            <div class="vote" >
-                                <i class="fas fa-star" v-for="i in convertVote(serie.vote_average)"></i>
+                            <div class="info">
+                                <h3>Titolo:{{' ' + serie.name}}</h3>
+                                <h3>{{serie.original_name}}</h3>
+                                <div class=language>
+                                    <div class="row" v-html="showFlag(serie.original_language)"></div>
+                                </div>
+                                <div class="vote" >
+                                    <i v-for ="(star, starIndex) in 5" :class=" convertVote(serie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
+                                </div>
                             </div>
                         </li>
                     </ul>
