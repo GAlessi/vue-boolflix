@@ -3,7 +3,6 @@ function init() {
         el:"#app",
 
         data:{
-            tvSeries:[],
             movies: [],
             searched: ""
         },
@@ -11,8 +10,9 @@ function init() {
         methods:{
             getApi: function () {
                 if (this.searched) {
+
                     //film
-                    axios.get('https://api.themoviedb.org/3/search/movie', {
+                    axios.get('https://api.themoviedb.org/3/search/multi', {
                         params: {
                             'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
                             'query': this.searched
@@ -21,20 +21,6 @@ function init() {
                     .then(data =>{
                         const moviesArray = data.data.results;
                         this.movies = moviesArray;
-                    })
-                    .catch(() => console.log('error'));
-
-
-                    //serieTV
-                    axios.get('https://api.themoviedb.org/3/search/tv', {
-                        params: {
-                            'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
-                            'query': this.searched
-                        }
-                    })
-                    .then(data =>{
-                        const seriesArray = data.data.results;
-                        this.tvSeries = seriesArray;
                     })
                     .catch(() => console.log('error'));
                 }
@@ -65,7 +51,7 @@ function init() {
 
             //accorcia l'overview se disponibile e troppo lungo
             slicer: function (text) {
-                if (text.length == '') {
+                if (!text) {
                     return "overview non disponibile"
                 }else if (text.length > 300) {
                     return text.slice(0,300) + '...';
