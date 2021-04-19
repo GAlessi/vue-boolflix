@@ -48,6 +48,14 @@ function init() {
                 }
             },
 
+            poster: function (img) {
+                if (!img) {
+                    return '<img src=img/unknown.jpg>'
+                }else {
+                    return '<img src="https://image.tmdb.org/t/p/w342' + img +'">'
+                }
+            },
+
             //converte il voto in un intero compreso tra 1 e 5 e aggiorna il data
             convertVote: function (voteDecimal) {
                 return parseInt(Math.round(voteDecimal/2));
@@ -56,4 +64,4 @@ function init() {
     });
 }
 
-$(init);
+document.addEventListener('DOMContentLoaded', init);

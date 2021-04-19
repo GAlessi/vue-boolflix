@@ -4,11 +4,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
-        <script
-            src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-            crossorigin="anonymous">
-        </script>
         <script src="https://cdn.jsdelivr.net/npm/vue"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>
         <title></title>
@@ -17,46 +12,50 @@
     </head>
     <body>
         <div id="app" class="container">
-            <div id="app" class="container">
-                <div class="row">
-                    <input type="text" name="" value="" placeholder="Cerca film/serieTV" v-model="searched" @keyup.enter="getApi">
-                    <button type="button" name="button" @click="getApi">Cerca</button>
+
+<!-- navbar -->
+                <div class="navbar">
+                    <div class="logo">
+                        <h1>BoolFlix</h1>
+                    </div>
+                    <div class="search">
+                        <input type="text" name="" value="" placeholder="Cerca film/serieTV" v-model="searched" @keyup.enter="getApi">
+                        <button type="button" name="button" @click="getApi">Cerca</button>
+                    </div>
                 </div>
 
-            <!-- Film -->
-            <ul class="row">
-                <li class="album" v-for="movie in movies">
-                    <h2>{{movie.title}}</h2>
-                    <h3>{{movie.original_title}}</h3>
-                    <div class="poster">
-                        <img :src="'https://image.tmdb.org/t/p/w342'+ movie.poster_path">
-                    </div>
-                    <div class=language>
-                        <div class="row" v-html="showFlag(movie.original_language)"></div>
-                    </div>
-                    <div class="vote" >
-                        <i class="fas fa-star" v-for="i in convertVote(movie.vote_average)"></i>
-                    </div>
-                </li>
-            </ul>
+<!-- contenitore principale -->
+                <main>
+                    <!-- Film -->
+                    <ul class="row">
+                        <li class="album" v-for="movie in movies">
+                            <h2>{{movie.title}}</h2>
+                            <h3>{{movie.original_title}}</h3>
+                            <div class="poster" v-html="poster(movie.poster_path)"></div>
+                            <div class=language>
+                                <div class="row" v-html="showFlag(movie.original_language)"></div>
+                            </div>
+                            <div class="vote" >
+                                <i class="fas fa-star" v-for="i in convertVote(movie.vote_average)"></i>
+                            </div>
+                        </li>
+                    </ul>
 
-            <!-- Serie TV -->
-            <ul class="row">
-                <li class="album" v-for="serie in tvSeries">
-                    <h2>{{serie.name}}</h2>
-                    <h3>{{serie.original_name}}</h3>
-                    <div class="poster">
-                        <img :src="'https://image.tmdb.org/t/p/w342'+ serie.poster_path">
-                    </div>
-                    <div class=language>
-                        <div class="row" v-html="showFlag(serie.original_language)"></div>
-                    </div>
-                    <div class="vote" >
-                        <i class="fas fa-star" v-for="i in convertVote(serie.vote_average)"></i>
-                    </div>
-                </li>
-            </ul>
-        </div>
+                    <!-- Serie TV -->
+                    <ul class="row">
+                        <li class="album" v-for="serie in tvSeries">
+                            <h2>{{serie.name}}</h2>
+                            <h3>{{serie.original_name}}</h3>
+                            <div class="poster" v-html="poster(serie.poster_path)"></div>
+                            <div class=language>
+                                <div class="row" v-html="showFlag(serie.original_language)"></div>
+                            </div>
+                            <div class="vote" >
+                                <i class="fas fa-star" v-for="i in convertVote(serie.vote_average)"></i>
+                            </div>
+                        </li>
+                    </ul>
+                </main>
         </div>
     </body>
 </html>
