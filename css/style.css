@@ -16,6 +16,7 @@
 .row{
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .album{
@@ -27,7 +28,16 @@
 
 }
 
-.album img{
+.row button{
+    margin-left: 10px;
+}
+
+.album .language img{
+    width: 20px;
+    margin: 0 10px;
+}
+
+.album .poster img{
     width: 200px;
     height: 200px;
     margin: 10px 0;

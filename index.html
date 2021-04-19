@@ -18,8 +18,10 @@
     <body>
         <div id="app" class="container">
             <div id="app" class="container">
-            <input type="text" name="" value="" placeholder="Cerca film" v-model="searched" @keyup.enter="getApi">
-            <button type="button" name="button" @click="getApi">Cerca</button>
+                <div class="row">
+                    <input type="text" name="" value="" placeholder="Cerca film" v-model="searched" @keyup.enter="getApi">
+                    <button type="button" name="button" @click="getApi">Cerca</button>
+                </div>
             <div class="row">
                 <div class="album" v-for="movie in movies">
                     <h2>{{movie.title}}</h2>
@@ -27,7 +29,7 @@
                     <div class="poster">
                         <img src="">
                     </div>
-                    <h3>{{movie.original_language}}</h3>
+                    <div class=language v-html="showFlag(movie.original_language)"></div>
                     <h3>{{movie.vote_average}}</h3>
                 </div>
 

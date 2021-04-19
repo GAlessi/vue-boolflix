@@ -18,10 +18,16 @@ function init() {
                 .then(data =>{
                     const moviesArray = data.data.results;
                     this.movies = moviesArray;
-                    console.log(this.movies);
                 })
+                .catch(() => console.log('error'));
             },
-
+            showFlag: function (language) {
+                if (language == "en" || language == "it" ) {
+                    return '<div class="row"><h3>Language: </h3><img src="img/' + language +'.png"></div>'
+                }else {
+                    return "<h3> Language: " + language +"</h3>"
+                }
+            }
         },
     });
 }
