@@ -3,6 +3,7 @@ function init() {
         el:"#app",
 
         data:{
+            actors:[],
             movies: [],
             tvSeries: [],
             searched: ""
@@ -11,7 +12,7 @@ function init() {
         methods:{
             getApi: function () {
                 if (this.searched) {
-
+                    this.actors=[];
                     //film
                     axios.get('https://api.themoviedb.org/3/search/movie', {
                         params: {
@@ -22,6 +23,10 @@ function init() {
                     .then(data =>{
                         const moviesArray = data.data.results;
                         this.movies = moviesArray;
+                        for (let i = 0; i < this.movies.length; i++) {
+                            const film = this.movies[i];
+                            this.getName(film.id)
+                        }
                     })
                     .catch(() => console.log('error'));
 
@@ -78,20 +83,7 @@ function init() {
                 }
             },
 
-            // getActors: function (id) {
-            //     //film
-            //     axios.get('https://api.themoviedb.org/3/multi/' + id, {
-            //         params: {
-            //             'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
-            //             'append_to_response': 'credits'
-            //         }
-            //     })
-            //     .then(data =>{
-            //         return 5
-            //     })
-            //     .catch(() => console.log('error'));
-            // },
-
+            //inserisce in array i file/serieTV più popolari
             popular: function () {
                 axios.get('https://api.themoviedb.org/3/movie/popular', {
                     params: {
@@ -116,6 +108,31 @@ function init() {
                     this.tvSeries = moviesArray;
                 })
                 .catch(() => console.log('error'));
+            },
+
+            //richiama l'api con il cast
+            getName: function (id) {
+
+                axios.get('https://api.themoviedb.org/3/movie/' + id + '/credits',{
+                    params: {
+                        'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
+                    }
+                })
+                .then(data=>{
+                    const cast = data.data.cast;
+                    const namesArray = [];
+                    for (let i = 0; i < 5; i++) {
+                        const actor = cast[i];
+                        namesArray.push(actor.name)
+                    }
+                    this.actors.push(namesArray);
+
+                })
+                .catch(()=>this.actors.push('Cast non disponibile'));
+            },
+
+            getActors: function (ind) {
+                return this.actors[ind]
             }
         },
 

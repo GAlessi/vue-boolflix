@@ -30,7 +30,7 @@
                     <!-- contenitore cards Films -->
                     <h1>Films</h1>
                     <ul class="row">
-                        <li class="album" v-for="movie in movies">
+                        <li class="album" v-for="(movie, ind) in movies">
                             <div class="poster" v-html="poster(movie.poster_path)"></div>
                             <ul class="info">
                                 <li>
@@ -50,6 +50,10 @@
                                 <li>
                                     <span class="title">Overview:</span>
                                     <span>{{slicer(movie.overview)}}</span>
+                                </li>
+                                <li>
+                                    <span class="title">Actors:</span>
+                                    <span v-for="actor in getActors(ind)"> {{actor}} </span>
                                 </li>
                             </ul>
 
@@ -80,6 +84,10 @@
                                     <span class="title">Overview:</span>
                                     <span>{{slicer(movie.overview)}}</span>
                                 </li>
+                                <!-- <li>
+                                    <span class="title">Actors:</span>
+                                    <span v-for="actor in getActors(ind)"> {{actor}} </span>
+                                </li> -->
                             </ul>
 
 
