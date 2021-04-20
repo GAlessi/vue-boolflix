@@ -123,7 +123,7 @@ function init() {
                 .catch(() => console.log('error'));
             },
 
-            //richiama l'api con il cast
+            //richiama l'api con il cast dei Films
             getFilmName: function (id) {
 
                 axios.get('https://api.themoviedb.org/3/movie/' + id + '/credits',{
@@ -143,6 +143,8 @@ function init() {
                 })
                 .catch(()=>this.actors.push('Cast non disponibile'));
             },
+
+            //richiama l'api con il cast delle serieTV
             getTVName: function (id) {
 
                 axios.get('https://api.themoviedb.org/3/tv/' + id + '/credits',{
@@ -163,9 +165,12 @@ function init() {
                 .catch(()=>this.actorsTV.push('Cast non disponibile'));
             },
 
+            //dato un indice restituisce gli attori(films)
             getActors: function (ind) {
                 return this.actors[ind]
             },
+
+            //dato un indice restituisce gli attori(serieTV)
             getTVActors: function (ind) {
                 return this.actorsTV[ind]
             }
