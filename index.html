@@ -63,7 +63,7 @@
 
                     <h1>Tv Series</h1>
                     <ul class="row">
-                        <li class="album" v-for="movie in tvSeries">
+                        <li class="album" v-for="(movie, ind) in tvSeries">
                             <div class="poster" v-html="poster(movie.poster_path)"></div>
                             <ul class="info">
                                 <li>
@@ -84,10 +84,10 @@
                                     <span class="title">Overview:</span>
                                     <span>{{slicer(movie.overview)}}</span>
                                 </li>
-                                <!-- <li>
+                                <li>
                                     <span class="title">Actors:</span>
-                                    <span v-for="actor in getActors(ind)"> {{actor}} </span>
-                                </li> -->
+                                    <span v-for="actor in getTVActors(ind)"> {{actor}} </span>
+                                </li>
                             </ul>
 
 

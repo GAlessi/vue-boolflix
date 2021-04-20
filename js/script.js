@@ -4,6 +4,7 @@ function init() {
 
         data:{
             actors:[],
+            actorsTV: [],
             movies: [],
             tvSeries: [],
             searched: ""
@@ -25,7 +26,7 @@ function init() {
                         this.movies = moviesArray;
                         for (let i = 0; i < this.movies.length; i++) {
                             const film = this.movies[i];
-                            this.getName(film.id)
+                            this.getFilmName(film.id)
                         }
                     })
                     .catch(() => console.log('error'));
@@ -40,6 +41,10 @@ function init() {
                     .then(data =>{
                         const seriesArray = data.data.results;
                         this.tvSeries = seriesArray;
+                        for (let i = 0; i < this.tvSeries.length; i++) {
+                            const film = this.tvSeries[i];
+                            this.getTVName(film.id)
+                        }
                     })
                     .catch(() => console.log('error'));
 
@@ -94,6 +99,10 @@ function init() {
                 .then(data =>{
                     const moviesArray = data.data.results;
                     this.movies = moviesArray;
+                    for (let i = 0; i < this.movies.length; i++) {
+                        const film = this.movies[i];
+                        this.getFilmName(film.id)
+                    }
                 })
                 .catch(() => console.log('error'));
 
@@ -106,12 +115,16 @@ function init() {
                 .then(data =>{
                     const moviesArray = data.data.results;
                     this.tvSeries = moviesArray;
+                    for (let i = 0; i < this.tvSeries.length; i++) {
+                        const film = this.tvSeries[i];
+                        this.getTVName(film.id)
+                    }
                 })
                 .catch(() => console.log('error'));
             },
 
             //richiama l'api con il cast
-            getName: function (id) {
+            getFilmName: function (id) {
 
                 axios.get('https://api.themoviedb.org/3/movie/' + id + '/credits',{
                     params: {
@@ -123,16 +136,38 @@ function init() {
                     const namesArray = [];
                     for (let i = 0; i < 5; i++) {
                         const actor = cast[i];
-                        namesArray.push(actor.name)
+                        namesArray.push(actor.name + ",")
                     }
                     this.actors.push(namesArray);
 
                 })
                 .catch(()=>this.actors.push('Cast non disponibile'));
             },
+            getTVName: function (id) {
+
+                axios.get('https://api.themoviedb.org/3/tv/' + id + '/credits',{
+                    params: {
+                        'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
+                    }
+                })
+                .then(data=>{
+                    const cast = data.data.cast;
+                    const namesArray = [];
+                    for (let i = 0; i < 5; i++) {
+                        const actor = cast[i];
+                        namesArray.push(actor.name + ",")
+                    }
+                    this.actorsTV.push(namesArray);
+
+                })
+                .catch(()=>this.actorsTV.push('Cast non disponibile'));
+            },
 
             getActors: function (ind) {
                 return this.actors[ind]
+            },
+            getTVActors: function (ind) {
+                return this.actorsTV[ind]
             }
         },
 
