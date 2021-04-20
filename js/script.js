@@ -4,6 +4,7 @@ function init() {
 
         data:{
             movies: [],
+            tvSeries: [],
             searched: ""
         },
 
@@ -12,7 +13,7 @@ function init() {
                 if (this.searched) {
 
                     //film
-                    axios.get('https://api.themoviedb.org/3/search/multi', {
+                    axios.get('https://api.themoviedb.org/3/search/movie', {
                         params: {
                             'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
                             'query': this.searched
@@ -23,6 +24,23 @@ function init() {
                         this.movies = moviesArray;
                     })
                     .catch(() => console.log('error'));
+
+                    //serieTV
+                    axios.get('https://api.themoviedb.org/3/search/tv', {
+                        params: {
+                            'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
+                            'query': this.searched
+                        }
+                    })
+                    .then(data =>{
+                        const seriesArray = data.data.results;
+                        this.tvSeries = seriesArray;
+                    })
+                    .catch(() => console.log('error'));
+
+
+                }else {
+                    this.popular();
                 }
             },
 
@@ -58,8 +76,52 @@ function init() {
                 }else {
                     return text;
                 }
+            },
+
+            // getActors: function (id) {
+            //     //film
+            //     axios.get('https://api.themoviedb.org/3/multi/' + id, {
+            //         params: {
+            //             'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
+            //             'append_to_response': 'credits'
+            //         }
+            //     })
+            //     .then(data =>{
+            //         return 5
+            //     })
+            //     .catch(() => console.log('error'));
+            // },
+
+            popular: function () {
+                axios.get('https://api.themoviedb.org/3/movie/popular', {
+                    params: {
+                        'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
+                        'page': '1'
+                    }
+                })
+                .then(data =>{
+                    const moviesArray = data.data.results;
+                    this.movies = moviesArray;
+                })
+                .catch(() => console.log('error'));
+
+                axios.get('https://api.themoviedb.org/3/tv/popular', {
+                    params: {
+                        'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
+                        'page': '1'
+                    }
+                })
+                .then(data =>{
+                    const moviesArray = data.data.results;
+                    this.tvSeries = moviesArray;
+                })
+                .catch(() => console.log('error'));
             }
-        }
+        },
+
+        mounted: function () {
+                this.popular();
+        },
 
     });
 }
