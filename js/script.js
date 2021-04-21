@@ -3,12 +3,18 @@ function init() {
         el:"#app",
 
         data:{
+            movieGenres: "",
+            tvGenres: "",
             api: "",
             actors:[],
             actorsTV: [],
             movies: [],
             tvSeries: [],
-            searched: ""
+            searched: "",
+            flags:{
+                it:'it.png',
+                en:'en.png',
+            }
         },
 
         methods:{
@@ -55,15 +61,6 @@ function init() {
                     .catch(() => console.log('error'));
             },
 
-            //stampa la bandiera se la nazionalità è En o It
-            showFlag: function (language) {
-                if (language == "en" || language == "it" ) {
-                    return '<span>Language: </span><img src="img/' + language +'.png">'
-                }else {
-                    return "<span> Language: " + language +"</span>"
-                }
-            },
-
             //stampa la copertina se disponibile
             poster: function (img) {
                 if (!img) {
@@ -102,6 +99,7 @@ function init() {
                     const namesArray = [];
                     for (let i = 0; i < 5; i++) {
                         const actor = cast[i];
+
                         if (i == 4) {
                             namesArray.push(actor.name)
                         }else {
@@ -118,26 +116,63 @@ function init() {
                 })
                 .catch(data=>{
                     if (media == 'movie') {
-                        this.actors.push('Cast non disponibile')
+                        this.actors.push(['cast non disponibile'])
                     }else {
-                        this.actorsTV.push('Cast non disponibile')
+                        this.actorsTV.push(['cast non disponibile'])
                     }
                 })
             },
 
-            //dato un indice restituisce gli attori(films)
-            getActors: function (ind, media) {
-                if (media == 'movie') {
-                    return this.actors[ind]
-                }else {
-                    return this.actorsTV[ind]
+            //scarica gli array necessari a convertire l'id di un genere
+            getGenreList: function () {
+                axios.get('https://api.themoviedb.org/3/genre/movie/list',{
+                    params: {
+                        'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
+                    }
+                })
+                .then(data=>{
+                    const genres = data.data.genres
+                    this.movieGenres=genres
+                })
+                .catch(() => console.log('error'));
+
+                axios.get('https://api.themoviedb.org/3/genre/tv/list',{
+                    params: {
+                        'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
+                    }
+                })
+                .then(data=>{
+                    const genres = data.data.genres
+                    this.tvGenres=genres
+                })
+                .catch(() => console.log('error'));
+            },
+
+            convertID: function (genres) {
+                console.log(genres);
+                const generi = [];
+                for (let x = 0; x < genres.length; x++) {
+                    const genreID = genres[x]
+                    for (let i = 0; i < this.movieGenres.length; i++) {
+                        const genreConverter = this.movieGenres[i]
+                        if (genreID == genreConverter.id) {
+                            generi.push(genreConverter.name);
+                            return
+                        }
+                    }
+                    console.log(generi);
+                    return generi
                 }
+                return generi
             }
+
         },
+
 
         mounted: function () {
             this.getApi('movie');
             this.getApi('tv');
+            this.getGenreList();
         },
 
     });

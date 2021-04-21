@@ -46,14 +46,22 @@
                                     <span class="title">Voto:</span>
                                     <i v-for ="(star, starIndex) in 5" :class=" convertVote(movie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
                                 </li>
-                                <li class="language title" v-html="showFlag(movie.original_language)"></li>
+                                <li class="language">
+                                    <span class="title">Lingua:</span>
+                                    <img v-if="movie.original_language == 'it'|| movie.original_language == 'en'" :src="'img/'+ flags[movie.original_language]">
+                                    <span v-else>{{' ' + movie.original_language}}</span>
+                                </li>
                                 <li>
                                     <span class="title">Overview:</span>
                                     <span>{{slicer(movie.overview)}}</span>
                                 </li>
                                 <li>
                                     <span class="title">Actors:</span>
-                                    <span v-for="actor in getActors(ind, 'movie')"> {{actor}} </span>
+                                    <span v-for="actor in actors[ind]"> {{actor}} </span>
+                                </li>
+                                <li>
+                                    <span class="title">Genre:</span>
+                                    <span v-for="genre in convertID(movie.genre_ids)">{{genre + ', '}}</span>
                                 </li>
                             </ul>
 
@@ -79,14 +87,18 @@
                                     <span class="title">Voto:</span>
                                     <i v-for ="(star, starIndex) in 5" :class=" convertVote(movie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
                                 </li>
-                                <li class="language title" v-html="showFlag(movie.original_language)"></li>
+                                <li class="language">
+                                    <span class="title">Lingua:</span>
+                                    <img v-if="movie.original_language == 'it'|| movie.original_language == 'en'" :src="'img/'+ flags[movie.original_language]">
+                                    <span v-else>{{' ' + movie.original_language}}</span>
+                                </li>
                                 <li>
                                     <span class="title">Overview:</span>
                                     <span>{{slicer(movie.overview)}}</span>
                                 </li>
                                 <li>
                                     <span class="title">Actors:</span>
-                                    <span v-for="actor in getActors(ind, 'tv')"> {{actor}} </span>
+                                    <span v-for="actor in actorsTV[ind]"> {{actor}} </span>
                                 </li>
                             </ul>
 
