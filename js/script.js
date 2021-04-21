@@ -3,6 +3,7 @@ function init() {
         el:"#app",
 
         data:{
+            api: "",
             actors:[],
             actorsTV: [],
             movies: [],
@@ -11,47 +12,47 @@ function init() {
         },
 
         methods:{
-            getApi: function () {
-                if (this.searched) {
+
+            //funzione generica per ottenimento API
+            getApi: function (media) {
+
                     this.actors=[];
-                    //film
-                    axios.get('https://api.themoviedb.org/3/search/movie', {
+                    this.actorsTV=[];
+
+            //verifica se è stata effettuata una ricerca e richiama l'API corrispondente al caso
+                    if (this.searched) {
+                        this.api = 'https://api.themoviedb.org/3/search/' + media
+                    }else {
+                        this.api = 'https://api.themoviedb.org/3/'+ media +'/popular/'
+                    }
+                    axios.get(this.api, {
                         params: {
                             'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
-                            'query': this.searched
+                            'query': this.searched,
+                            'page': 1
                         }
                     })
+
+
                     .then(data =>{
-                        const moviesArray = data.data.results;
-                        this.movies = moviesArray;
-                        for (let i = 0; i < this.movies.length; i++) {
-                            const film = this.movies[i];
-                            this.getFilmName(film.id)
+                        if (media == 'movie') {
+                            const moviesArray = data.data.results;
+                            this.movies = moviesArray;
+
+                            for (let i = 0; i < this.movies.length; i++) {
+                                const film = this.movies[i];
+                                this.getFilmName(film.id, media)
+                            }
+                        }else {
+                            const seriesArray = data.data.results;
+                            this.tvSeries = seriesArray;
+                            for (let i = 0; i < this.tvSeries.length; i++) {
+                                const film = this.tvSeries[i];
+                                this.getFilmName(film.id, media)
+                            }
                         }
                     })
                     .catch(() => console.log('error'));
-
-                    //serieTV
-                    axios.get('https://api.themoviedb.org/3/search/tv', {
-                        params: {
-                            'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
-                            'query': this.searched
-                        }
-                    })
-                    .then(data =>{
-                        const seriesArray = data.data.results;
-                        this.tvSeries = seriesArray;
-                        for (let i = 0; i < this.tvSeries.length; i++) {
-                            const film = this.tvSeries[i];
-                            this.getTVName(film.id)
-                        }
-                    })
-                    .catch(() => console.log('error'));
-
-
-                }else {
-                    this.popular();
-                }
             },
 
             //stampa la bandiera se la nazionalità è En o It
@@ -88,45 +89,10 @@ function init() {
                 }
             },
 
-            //inserisce in array i file/serieTV più popolari
-            popular: function () {
-                axios.get('https://api.themoviedb.org/3/movie/popular', {
-                    params: {
-                        'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
-                        'page': '1'
-                    }
-                })
-                .then(data =>{
-                    const moviesArray = data.data.results;
-                    this.movies = moviesArray;
-                    for (let i = 0; i < this.movies.length; i++) {
-                        const film = this.movies[i];
-                        this.getFilmName(film.id)
-                    }
-                })
-                .catch(() => console.log('error'));
+            //richiama l'api con il cast dei Films/serieTV
+            getFilmName: function (id, media) {
 
-                axios.get('https://api.themoviedb.org/3/tv/popular', {
-                    params: {
-                        'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
-                        'page': '1'
-                    }
-                })
-                .then(data =>{
-                    const moviesArray = data.data.results;
-                    this.tvSeries = moviesArray;
-                    for (let i = 0; i < this.tvSeries.length; i++) {
-                        const film = this.tvSeries[i];
-                        this.getTVName(film.id)
-                    }
-                })
-                .catch(() => console.log('error'));
-            },
-
-            //richiama l'api con il cast dei Films
-            getFilmName: function (id) {
-
-                axios.get('https://api.themoviedb.org/3/movie/' + id + '/credits',{
+                axios.get('https://api.themoviedb.org/3/' + media + '/' + id + '/credits',{
                     params: {
                         'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
                     }
@@ -136,48 +102,42 @@ function init() {
                     const namesArray = [];
                     for (let i = 0; i < 5; i++) {
                         const actor = cast[i];
-                        namesArray.push(actor.name + ",")
+                        if (i == 4) {
+                            namesArray.push(actor.name)
+                        }else {
+                            namesArray.push(actor.name + ",")
+                        }
                     }
-                    this.actors.push(namesArray);
+
+                    if (media == 'movie') {
+                        this.actors.push(namesArray);
+                    }else {
+                        this.actorsTV.push(namesArray);
+                    }
 
                 })
-                .catch(()=>this.actors.push('Cast non disponibile'));
-            },
-
-            //richiama l'api con il cast delle serieTV
-            getTVName: function (id) {
-
-                axios.get('https://api.themoviedb.org/3/tv/' + id + '/credits',{
-                    params: {
-                        'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
+                .catch(data=>{
+                    if (media == 'movie') {
+                        this.actors.push('Cast non disponibile')
+                    }else {
+                        this.actorsTV.push('Cast non disponibile')
                     }
                 })
-                .then(data=>{
-                    const cast = data.data.cast;
-                    const namesArray = [];
-                    for (let i = 0; i < 5; i++) {
-                        const actor = cast[i];
-                        namesArray.push(actor.name + ",")
-                    }
-                    this.actorsTV.push(namesArray);
-
-                })
-                .catch(()=>this.actorsTV.push('Cast non disponibile'));
             },
 
             //dato un indice restituisce gli attori(films)
-            getActors: function (ind) {
-                return this.actors[ind]
-            },
-
-            //dato un indice restituisce gli attori(serieTV)
-            getTVActors: function (ind) {
-                return this.actorsTV[ind]
+            getActors: function (ind, media) {
+                if (media == 'movie') {
+                    return this.actors[ind]
+                }else {
+                    return this.actorsTV[ind]
+                }
             }
         },
 
         mounted: function () {
-                this.popular();
+            this.getApi('movie');
+            this.getApi('tv');
         },
 
     });
