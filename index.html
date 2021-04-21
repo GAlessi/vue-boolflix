@@ -61,7 +61,7 @@
                                 </li>
                                 <li>
                                     <span class="title">Genre:</span>
-                                    <span v-for="genre in convertID(movie.genre_ids)">{{genre + ', '}}</span>
+                                    <span v-for="genre in convertID(movie.genre_ids, 'movie')">{{genre}}</span>
                                 </li>
                             </ul>
 
@@ -99,6 +99,10 @@
                                 <li>
                                     <span class="title">Actors:</span>
                                     <span v-for="actor in actorsTV[ind]"> {{actor}} </span>
+                                </li>
+                                <li>
+                                    <span class="title">Genre:</span>
+                                    <span v-for="genre in convertID(movie.genre_ids, 'tv')">{{genre}}</span>
                                 </li>
                             </ul>
 

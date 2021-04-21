@@ -79,8 +79,8 @@ function init() {
             slicer: function (text) {
                 if (!text) {
                     return "overview non disponibile"
-                }else if (text.length > 300) {
-                    return text.slice(0,300) + '...';
+                }else if (text.length > 200) {
+                    return text.slice(0,200) + '...';
                 }else {
                     return text;
                 }
@@ -125,6 +125,8 @@ function init() {
 
             //scarica gli array necessari a convertire l'id di un genere
             getGenreList: function () {
+
+                //film
                 axios.get('https://api.themoviedb.org/3/genre/movie/list',{
                     params: {
                         'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
@@ -133,9 +135,11 @@ function init() {
                 .then(data=>{
                     const genres = data.data.genres
                     this.movieGenres=genres
+                    console.log(this.movieGenres);
                 })
                 .catch(() => console.log('error'));
 
+                //serieTV
                 axios.get('https://api.themoviedb.org/3/genre/tv/list',{
                     params: {
                         'api_key': 'f1abffa0ec85176757c58a0ff27fccba',
@@ -148,20 +152,33 @@ function init() {
                 .catch(() => console.log('error'));
             },
 
-            convertID: function (genres) {
-                console.log(genres);
+            convertID: function (genres, media) {
                 const generi = [];
                 for (let x = 0; x < genres.length; x++) {
                     const genreID = genres[x]
-                    for (let i = 0; i < this.movieGenres.length; i++) {
-                        const genreConverter = this.movieGenres[i]
-                        if (genreID == genreConverter.id) {
-                            generi.push(genreConverter.name);
-                            return
+                    if (media == 'movie') {
+                        for (let i = 0; i < this.movieGenres.length; i++) {
+                            const genreConverter = this.movieGenres[i]
+                            if (genreID == genreConverter.id) {
+                                if (x == genres.length - 1) {
+                                    generi.push(genreConverter.name);
+                                }else {
+                                    generi.push(genreConverter.name + ', ');
+                                }
+                            }
+                        }
+                    }else {
+                        for (let i = 0; i < this.tvGenres.length; i++) {
+                            const genreConverter = this.tvGenres[i]
+                            if (genreID == genreConverter.id) {
+                                if (x == genres.length - 1) {
+                                    generi.push(genreConverter.name);
+                                }else {
+                                    generi.push(genreConverter.name + ', ');
+                                }
+                            }
                         }
                     }
-                    console.log(generi);
-                    return generi
                 }
                 return generi
             }
