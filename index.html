@@ -18,6 +18,20 @@
                     <div class="logo">
                         <h1>BoolFlix</h1>
                     </div>
+                    <div class="checkbox">
+                        <div class="row">
+                            <span>Films</span>
+                            <input type="checkbox" v-model="movie">
+                        </div>
+                        <div class="row">
+                            <span>SerieTV</span>
+                            <input type="checkbox" v-model="tv">
+                        </div>
+                    </div>
+                    <select v-model="selectedGenre">
+                        <option selected>Select Genre</option>
+                        <option v-for="genre in pageMovieGenre">{{genre}}</option>
+                    </select>
                     <div class="search">
                         <input type="text" name="" value="" placeholder="Cerca film/serieTV" v-model="searched" @keyup.enter="getApi('movie'), getApi('tv')">
                         <button type="button" name="button" @click="getApi('movie'), getApi('tv')">Cerca</button>
@@ -28,87 +42,92 @@
                 <main>
 
                     <!-- contenitore cards Films -->
-                    <h1>Films</h1>
-                    <ul class="row">
-                        <li class="album" v-for="(movie, ind) in movies">
-                            <div class="poster" v-html="poster(movie.poster_path)"></div>
-                            <ul class="info">
-                                <li>
-                                    <span class="title">Titolo:</span>
-                                    <span>{{' ' + movie.title}}</span>
-                                </li>
-                                <li>
-                                    <span class="title">Titolo originale:</span>
-                                    <span>{{' ' + movie.original_title}}</span>
+                    <template v-if="movie">
+                        <h1>Films</h1>
+                        <ul class="row">
+                            <li class="album" v-for="(movie, ind) in movies">
+                                <div class="poster" v-html="poster(movie.poster_path)"></div>
+                                <ul class="info">
+                                    <li>
+                                        <span class="title">Titolo:</span>
+                                        <span>{{' ' + movie.title}}</span>
+                                    </li>
+                                    <li>
+                                        <span class="title">Titolo originale:</span>
+                                        <span>{{' ' + movie.original_title}}</span>
 
-                                </li>
-                                <li class="vote" >
-                                    <span class="title">Voto:</span>
-                                    <i v-for ="(star, starIndex) in 5" :class=" convertVote(movie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
-                                </li>
-                                <li class="language">
-                                    <span class="title">Lingua:</span>
-                                    <img v-if="movie.original_language == 'it'|| movie.original_language == 'en'" :src="'img/'+ flags[movie.original_language]">
-                                    <span v-else>{{' ' + movie.original_language}}</span>
-                                </li>
-                                <li>
-                                    <span class="title">Overview:</span>
-                                    <span>{{slicer(movie.overview)}}</span>
-                                </li>
-                                <li>
-                                    <span class="title">Actors:</span>
-                                    <span v-for="actor in actors[ind]"> {{actor}} </span>
-                                </li>
-                                <li>
-                                    <span class="title">Genre:</span>
-                                    <span v-for="genre in convertID(movie.genre_ids, 'movie')">{{genre}}</span>
-                                </li>
-                            </ul>
-
-
-                        </li>
-                    </ul>
-
-                    <h1>Tv Series</h1>
-                    <ul class="row">
-                        <li class="album" v-for="(movie, ind) in tvSeries">
-                            <div class="poster" v-html="poster(movie.poster_path)"></div>
-                            <ul class="info">
-                                <li>
-                                    <span class="title">Titolo:</span>
-                                    <span>{{' ' + movie.name}}</span>
-                                </li>
-                                <li>
-                                    <span class="title">Titolo originale:</span>
-                                    <span>{{' ' + movie.original_name}}</span>
-
-                                </li>
-                                <li class="vote" >
-                                    <span class="title">Voto:</span>
-                                    <i v-for ="(star, starIndex) in 5" :class=" convertVote(movie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
-                                </li>
-                                <li class="language">
-                                    <span class="title">Lingua:</span>
-                                    <img v-if="movie.original_language == 'it'|| movie.original_language == 'en'" :src="'img/'+ flags[movie.original_language]">
-                                    <span v-else>{{' ' + movie.original_language}}</span>
-                                </li>
-                                <li>
-                                    <span class="title">Overview:</span>
-                                    <span>{{slicer(movie.overview)}}</span>
-                                </li>
-                                <li>
-                                    <span class="title">Actors:</span>
-                                    <span v-for="actor in actorsTV[ind]"> {{actor}} </span>
-                                </li>
-                                <li>
-                                    <span class="title">Genre:</span>
-                                    <span v-for="genre in convertID(movie.genre_ids, 'tv')">{{genre}}</span>
-                                </li>
-                            </ul>
+                                    </li>
+                                    <li class="vote" >
+                                        <span class="title">Voto:</span>
+                                        <i v-for ="(star, starIndex) in 5" :class=" convertVote(movie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
+                                    </li>
+                                    <li class="language">
+                                        <span class="title">Lingua:</span>
+                                        <img v-if="movie.original_language == 'it'|| movie.original_language == 'en'" :src="'img/'+ flags[movie.original_language]">
+                                        <span v-else>{{' ' + movie.original_language}}</span>
+                                    </li>
+                                    <li>
+                                        <span class="title">Overview:</span>
+                                        <span>{{slicer(movie.overview)}}</span>
+                                    </li>
+                                    <li>
+                                        <span class="title">Actors:</span>
+                                        <span v-for="actor in actors[ind]"> {{actor}} </span>
+                                    </li>
+                                    <li>
+                                        <span class="title">Genre:</span>
+                                        <span v-for="genre in convertID(movie.genre_ids, 'movie')">{{genre}}</span>
+                                    </li>
+                                </ul>
 
 
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
+                    </template>
+
+
+                    <template v-if="tv">
+                        <h1>Tv Series</h1>
+                        <ul class="row">
+                            <li class="album" v-for="(movie, ind) in tvSeries">
+                                <div class="poster" v-html="poster(movie.poster_path)"></div>
+                                <ul class="info">
+                                    <li>
+                                        <span class="title">Titolo:</span>
+                                        <span>{{' ' + movie.name}}</span>
+                                    </li>
+                                    <li>
+                                        <span class="title">Titolo originale:</span>
+                                        <span>{{' ' + movie.original_name}}</span>
+
+                                    </li>
+                                    <li class="vote" >
+                                        <span class="title">Voto:</span>
+                                        <i v-for ="(star, starIndex) in 5" :class=" convertVote(movie.vote_average) > starIndex ? 'fas fa-star' : 'far fa-star'"></i>
+                                    </li>
+                                    <li class="language">
+                                        <span class="title">Lingua:</span>
+                                        <img v-if="movie.original_language == 'it'|| movie.original_language == 'en'" :src="'img/'+ flags[movie.original_language]">
+                                        <span v-else>{{' ' + movie.original_language}}</span>
+                                    </li>
+                                    <li>
+                                        <span class="title">Overview:</span>
+                                        <span>{{slicer(movie.overview)}}</span>
+                                    </li>
+                                    <li>
+                                        <span class="title">Actors:</span>
+                                        <span v-for="actor in actorsTV[ind]"> {{actor}} </span>
+                                    </li>
+                                    <li>
+                                        <span class="title">Genre:</span>
+                                        <span v-for="genre in convertID(movie.genre_ids, 'tv')">{{genre}}</span>
+                                    </li>
+                                </ul>
+
+
+                            </li>
+                        </ul>
+                    </template>
                 </main>
         </div>
     </body>

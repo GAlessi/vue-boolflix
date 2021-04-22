@@ -3,6 +3,8 @@ function init() {
         el:"#app",
 
         data:{
+            movie:true,
+            tv:true,
             movieGenres: "",
             tvGenres: "",
             api: "",
@@ -14,7 +16,10 @@ function init() {
             flags:{
                 it:'it.png',
                 en:'en.png',
-            }
+            },
+            pageMovieGenre:[],
+            selectedGenre:"Select Genre",
+            genreObj:{}
         },
 
         methods:{
@@ -135,7 +140,6 @@ function init() {
                 .then(data=>{
                     const genres = data.data.genres
                     this.movieGenres=genres
-                    console.log(this.movieGenres);
                 })
                 .catch(() => console.log('error'));
 
@@ -162,6 +166,9 @@ function init() {
                             if (genreID == genreConverter.id) {
                                 if (x == genres.length - 1) {
                                     generi.push(genreConverter.name);
+                                    if (!this.pageMovieGenre.includes(genreConverter.name)) {
+                                        this.pageMovieGenre.push(genreConverter.name);
+                                    }
                                 }else {
                                     generi.push(genreConverter.name + ', ');
                                 }
@@ -173,6 +180,9 @@ function init() {
                             if (genreID == genreConverter.id) {
                                 if (x == genres.length - 1) {
                                     generi.push(genreConverter.name);
+                                    if (!this.pageMovieGenre.includes(genreConverter.name)) {
+                                        this.pageMovieGenre.push(genreConverter.name);
+                                    }
                                 }else {
                                     generi.push(genreConverter.name + ', ');
                                 }

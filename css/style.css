@@ -37,7 +37,19 @@ li{
     color: red;
 }
 
-.navbar .search input{
+.checkbox{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.checkbox .row span{
+    color: rgb(240,240,240);
+    margin: 0 5px;
+}
+
+.navbar .search input, .navbar .search button{
     padding: 3px;
 }
 
